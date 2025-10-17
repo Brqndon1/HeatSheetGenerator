@@ -5,11 +5,21 @@
 </head>
 
 <body>
-    <h1>Enter your Sheet</h1>
+    <h1>Enter your Sheet of Swimmers</h1>
     <h3>Please upload your csv file</h3>
 
     <form action="http://127.0.0.1:5000/upload" method="POST" enctype="multipart/form-data">
         <input type="file" name="csvSheet" accept=".csv">
+
+        <label>Filter by Stroke:</label>
+        <select name="stroke">
+            <option value="">-- Select Stroke --</option>
+            <option value="Freestyle">Freestyle</option>
+            <option value="Breaststroke">Breaststroke</option>
+            <option value="Backstroke">Backstroke</option>
+            <option value="Butterfly">Butterfly</option>
+        </select>
+
         <button type="submit">Upload</button>
     </form>
 
@@ -17,6 +27,5 @@
     <img src="image.png" alt="Swimming Icon">
 
 </body>
-
 </html>
 
