@@ -10,6 +10,7 @@ CORS(app)
 def upload():
     # requests file from html file with name of csvSheet
     file = request.files['csvSheet']
+    file.seek(0)    # reset file so you can reuse back button
     df = pd.read_csv(file)
 
     stroke = request.form.get("stroke")
@@ -18,7 +19,8 @@ def upload():
         df = df[df["stroke"] == stroke]
 
     print(df) 
+    back_button = '<button onclick="history.back()">Back</button>'
     # flask needs to return something that the web browser can understand (txt/html)
-    return df.to_html()
+    return df.to_html() + back_button
 
 app.run()
