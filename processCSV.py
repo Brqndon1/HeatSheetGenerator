@@ -1,24 +1,16 @@
-from flask import Flask, request, render_template_string
-import csv
-import io
+from flask import Flask, request
+import pandas as pd
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return '''
-    <h1>Enter your Sheet</h1>
-    <h3>Please upload your csv file</h3>
-
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="csvSheet" accept=".csv">
-        <button type="submit">Upload</button>
-    </form>
-
-    <img src="image.png" alt="Swimming Icon">
-    '''
-
-@app.route("/upload", methods=['POST'])
+# /upload page will output the following
+@app.route('/upload', methods=['POST'])
 def upload():
-    print("Success!")
-    return "File upload successful"
+    # requests file from html file with name of csvSheet
+    file = request.files['csvSheet']
+    df = pd.read_csv(file)
+    print(df) 
+    # flask needs to return something that the web browser can understand (txt/html)
+    return df.to_html()
+
+app.run()
