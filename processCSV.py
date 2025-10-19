@@ -15,12 +15,16 @@ def upload():
 
     stroke = request.form.get("stroke")
     ageGroup = request.form.get("ageGroup")
+    number = request.form.get("number")
 
     if stroke:
         df = df[df["stroke"] == stroke]
 
     if ageGroup:
         df = df[df["age_group"] == ageGroup]
+
+    if number:
+        df = df.head(int(number))
 
     print(df) 
     back_button = '<button onclick="history.back()">Back</button>'
