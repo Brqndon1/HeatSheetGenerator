@@ -16,6 +16,7 @@ def upload():
     stroke = request.form.get("stroke")
     ageGroup = request.form.get("ageGroup")
     number = request.form.get("number")
+    fastest3 = request.form.get("fastest3")
 
     if stroke:
         df = df[df["stroke"] == stroke]
@@ -23,8 +24,8 @@ def upload():
     if ageGroup:
         df = df[df["age_group"] == ageGroup]
 
-    if number:
-        df = df.head(int(number))
+    if fastest3:
+        df = df.sort_values("original_time").head(3)
 
     print(df) 
     back_button = '<button onclick="history.back()">Back</button>'
