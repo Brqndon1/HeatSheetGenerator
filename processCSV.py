@@ -27,16 +27,12 @@ def upload():
     if fastest3:
         df = df.sort_values("original_time").head(3)
 
-    # makes df into excel format 
-    # file is ready to be downloaded later in /upload
-    df.to_excel('temp_results.xlsx', index=False)
-
     back_button = '<button onclick="history.back()">Back</button>'
     download_button = '<a href="/download_excel"><button>Download Excel</button></a>'
 
     
     # flask needs to return something that the web browser can understand (txt/html)
-    return formatHeatSheet(createFormat()) + back_button + download_button
+    return formatHeatSheet(createFormat(), df) + back_button + download_button
 
 # user wants to download results to excel
 @app.route('/download_excel')
@@ -67,24 +63,38 @@ def download_excel():
 
 # create list of all events possible
 def createFormat():
-    genders = ["Girls", "Boys"]
-    listOfAllAgeGroups = ["8 & Under", "9 - 10", "11 - 12", "13 - 14", "15 - 18"]
+    genders1 = ["Girls", "Boys"]
+    genders2 = ["Women", "Men"]
+    ageGroup1 = ["8 & Under", "9-10", "11-12", "13-14"]
+    ageGroup2 = ["15-18"]
     listYds = ["25yd", "50yd", "100yd"]
     listOfStrokes = ["Backstroke", "Breaststroke", "Butterfly", "Freestyle"]
 
-    events = [f"{gender} {age} {distance} {stroke}"
-                for gender in genders
-                for age in listOfAllAgeGroups
+    events = []
+
+    events += [f"{gender} {age} {distance} {stroke}"
+                for gender in genders1
+                for age in ageGroup1
                 for distance in listYds
                 for stroke in listOfStrokes]
-
+    events += [f"{gender} {age} {distance} {stroke}"
+                for gender in genders2
+                for age in ageGroup2
+                for distance in listYds
+                for stroke in listOfStrokes]
     return events
 
 # to view heats in current tab
-def formatHeatSheet(events):
+def formatHeatSheet(events, df):
     output = "<h2>Swim Meet - Event List</h2>"
+    ## example event: Girls 8 & Under 25yd Backstroke
     for eventNum, event in enumerate(events, start=1):
-        output += f"<p>Event {eventNum}: {event}</p>"
+        output += f"<p>Event {eventNum}: {event}</p>"    # creating format for each event
+        # concatenate in df to check against event to add swimmers.
+        for idx, row in df.iterrows():
+            swimmer = f"{row['age_group']} {row['distance']}yd {row['stroke']}"
+            if event == swimmer:
+                output += f"<p2> {row['first_name']} {row['last_name']}<br></p2>"
 
     return output
 
