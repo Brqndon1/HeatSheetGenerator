@@ -67,19 +67,31 @@ def formatHeatSheet(events, df, lanes):
     eventNum = 1
     # loop through each possible event
     for event in events:
-        # add swimmer to new df if they are swimming that event
+        # df of only swimmers who match the event we are currently looping through
         event_swimmers = df[df['event_full'] == event]
+        event_swimmers = event_swimmers.sort_values('converted_time', ascending=False)
 
         # ensuring no empty events
         if len(event_swimmers) > 0:
             output += f"<h2><b>Event {eventNum}: {event}</b></h2>"    # creating format for each event
-            num_heats = (len(event_swimmers) + int(lanes) - 1) // int(lanes)
+            num_swimmers = len(event_swimmers)
+            num_heats = (num_swimmers + int(lanes) - 1) // int(lanes)
             
-           # Loop through each heat
+            remainder = num_swimmers % int(lanes)
+            if remainder == 0:
+                remainder = int(lanes)
+
+            # Loop through each heat
             for heat_num in range(1, num_heats + 1):
-                # Get swimmers for this heat
-                start_idx = (heat_num - 1) * int(lanes)
-                end_idx = start_idx + int(lanes)
+                # in case first heat is not fully filled (depending on # of swimmers)
+                if heat_num == 1:
+                    start_idx = 0
+                    end_idx = remainder
+                # ensures that rest of heats are filled completely
+                else:
+                    start_idx = remainder + (heat_num - 2) * int(lanes)
+                    end_idx = start_idx + int(lanes)
+
                 heat_swimmers = event_swimmers.iloc[start_idx:end_idx]
                 
                 # Add heat header
@@ -89,7 +101,7 @@ def formatHeatSheet(events, df, lanes):
                 
                 # Loop through each swimmer in this heat
                 for lane_num, (idx, swimmer) in enumerate(heat_swimmers.iterrows(), start=1):
-                    # Format name as "Last First"
+                    # Format name as "Last, First"
                     last_first = f"{swimmer['last_name']}, {swimmer['first_name']}"
                     # Add table row with lane, name, age, team, time
                     output += f"""
