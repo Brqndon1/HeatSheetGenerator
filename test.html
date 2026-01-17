@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1> My tabs </h1>
+
+    <button onclick="showTab1()">Tab 1</button>
+    <button onclick="showTab2()">Tab 2</button>
+
+    <div id="tab1">
+        <h2> this is tab 1 </h2>
+        <p> content for tab 1 here </p>
+    </div>
+
+    <div id="tab2" class="hidden">
+        <h2> this is tab 2 </h2>
+        <p> content for tab 2 here </p>
+    </div>
+
+    <head>
+        <style>
+            .hidden {
+                display: none;
+            }
+        </style>
+    </head>
+
+    <script>
+        function showTab1(){
+            document.getElementById('tab1').classList.remove('hidden');
+            document.getElementById('tab2').classList.add('hidden');
+        }
+        function showTab2(){
+            document.getElementById('tab1').classList.add('hidden');
+            document.getElementById('tab2').classList.remove('hidden');
+        }
+    </script>
+
+</body>
+</html>

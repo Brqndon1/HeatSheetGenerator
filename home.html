@@ -8,45 +8,71 @@
     <h1>Enter your Sheet of Swimmers</h1>
     <h3>Please upload your csv file</h3>
 
+    <button onclick="showTab1()">Swimmer Info Tab</button>
+    <button onclick="showTab2()">Heat Sheet Tab</button>
+
     <form action="http://127.0.0.1:5000/upload" method="POST" enctype="multipart/form-data">
         <input type="file" name="csvSheet" accept=".csv">
 
-        <label>Filter by Stroke:</label>
-        <select name="stroke">
-            <option value="">-- Select Stroke --</option>
-            <option value="Freestyle">Freestyle</option>
-            <option value="Breaststroke">Breaststroke</option>
-            <option value="Backstroke">Backstroke</option>
-            <option value="Butterfly">Butterfly</option>
-        </select>
+        <div id="swimmerInfoTab" class="hidden">
+            <label>Filter by Stroke:</label>
+            <select name="stroke">
+                <option value="">-- Select Stroke --</option>
+                <option value="Freestyle">Freestyle</option>
+                <option value="Breaststroke">Breaststroke</option>
+                <option value="Backstroke">Backstroke</option>
+                <option value="Butterfly">Butterfly</option>
+            </select>
+    
+            <label>Filter by Age Group:</label>
+            <select name="ageGroup">
+                <option value="">-- Select Age Group --</option>
+                <option value="Girls 8 & Under">Girls 8 & Under</option>
+                <option value="Boys 8 & Under">Boys 8 & Under</option>
+                <option value="Girls 9-10">Girls 9-10</option>
+                <option value="Boys 9-10">Boys 9-10</option>
+                <option value="Girls 11-12">Girls 11-12</option>
+                <option value="Boys 11-12">Boys 11-12</option>
+                <option value="Girls 13-14">Girls 13-14</option>
+                <option value="Boys 13-14">Boys 13-14</option>
+                <option value="Women 15-18">Women 15-18</option>
+                <option value="Men 15-18">Men 15-18</option>
+            </select>
+    
+            <label>Fastest 3 swimmers?:</label>
+            <input type="checkbox" name="fastest3">
+        </div>
 
-        <label>Filter by Age Group:</label>
-        <select name="ageGroup">
-            <option value="">-- Select Age Group --</option>
-            <option value="Girls 8 & Under">Girls 8 & Under</option>
-            <option value="Boys 8 & Under">Boys 8 & Under</option>
-            <option value="Girls 9-10">Girls 9-10</option>
-            <option value="Boys 9-10">Boys 9-10</option>
-            <option value="Girls 11-12">Girls 11-12</option>
-            <option value="Boys 11-12">Boys 11-12</option>
-            <option value="Girls 13-14">Girls 13-14</option>
-            <option value="Boys 13-14">Boys 13-14</option>
-            <option value="Women 15-18">Women 15-18</option>
-            <option value="Men 15-18">Men 15-18</option>
-        </select>
+        <div id="heatSheetTab" class="hidden">
+            <label>Amount of lanes at pool:</label>
+            <select name="amount_of_lanes">
+                <option value="">-- Select Amount of Lanes --</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+            </select>
+            <button type="submit">Upload</button>
+        </div>
 
-        <label>Fastest 3 swimmers?:</label>
-        <input type="checkbox" name="fastest3">
-
-        <label>Amount of lanes at pool:</label>
-        <select name="amount_of_lanes">
-            <option value="">-- Select Amount of Lanes --</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="8">8</option>
-            <option value="10">10</option>
-        </select>
-        <button type="submit">Upload</button>
+        <head>
+            <style>
+                .hidden{
+                    display: none;
+                }
+            </style>
+        </head>
+        
+        <script>
+            function showTab1(){
+                document.getElementById('swimmerInfoTab').classList.remove('hidden');
+                document.getElementById('heatSheetTab').classList.add('hidden');
+            }
+            function showTab2(){
+                document.getElementById('swimmerInfoTab').classList.add('hidden');
+                document.getElementById('heatSheetTab').classList.remove('hidden');
+            }
+        </script>
 
     </form>
 
